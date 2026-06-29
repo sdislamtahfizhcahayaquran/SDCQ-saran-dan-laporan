@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Laporan & Keluhan Orang Tua — SD Cahaya Qur'an</title>
+<style>
+  :root{
+    /* Palet diambil dari logo SD Cahaya Qur'an */
+    --deep-green:#1A7A3C;   /* hijau tua logo (tulisan "CAHAYA QUR'AN") */
+    --green:#3C9450;        /* hijau pertengahan untuk hover/aksen */
+    --lime:#9AC93B;         /* hijau lime logo (kotak belakang) */
+    --sky:#5BBCE4;          /* biru muda logo ("SD CQ") */
+    --cream:#F7F9F5;        /* netral terang, sedikit kehijauan */
+    --ink:#243226;
+    --ink-soft:#5E6B60;
+    --line:#DCE5D6;
+    --white:#FFFFFF;
+    --error:#C24A3D;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:Tahoma, Geneva, Verdana, sans-serif;
+    line-height:1.5;
+  }
+  .wrap{
+    max-width:640px;
+    margin:0 auto;
+    padding:0;
+  }
+  body{padding-bottom:40px;}
+  .brandbar{
+    background:var(--white);
+    border-bottom:3px solid var(--lime);
+    padding:14px 20px;
+  }
+  .brandbar-inner{
+    max-width:600px;
+    margin:0 auto;
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+  .brandbar img{
+    width:46px;
+    height:46px;
+    object-fit:contain;
+    flex-shrink:0;
+  }
+  .brandbar-text{
+    display:flex;
+    flex-direction:column;
+    line-height:1.25;
+  }
+  .brandbar-text .school-name{
+    font-size:15px;
+    font-weight:bold;
+    color:var(--deep-green);
+    letter-spacing:0.01em;
+  }
+  .brandbar-text .school-tagline{
+    font-size:11.5px;
+    color:var(--sky);
+    font-weight:bold;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+  }
+  .topbar{
+    background:linear-gradient(135deg, var(--deep-green) 0%, var(--green) 100%);
+    padding:34px 20px 54px;
+    position:relative;
+    overflow:hidden;
+  }
+  .topbar::after{
+    content:"";
+    position:absolute;
+    right:-40px; top:-40px;
+    width:180px; height:180px;
+    border:1px solid rgba(154,201,59,0.35);
+    border-radius:50%;
+  }
+  .topbar::before{
+    content:"";
+    position:absolute;
+    right:20px; bottom:-60px;
+    width:120px; height:120px;
+    border:1px solid rgba(91,188,228,0.3);
+    border-radius:50%;
+  }
+  .topbar-inner{
+    max-width:600px;
+    margin:0 auto;
+    position:relative;
+    z-index:1;
+  }
+  .eyebrow{
+    color:var(--lime);
+    font-size:13px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    font-weight:bold;
+    margin-bottom:8px;
+  }
+  h1{
+    color:var(--white);
+    font-size:24px;
+    margin:0 0 8px;
+    font-weight:bold;
+  }
+  .topbar p{
+    color:rgba(255,255,255,0.85);
+    font-size:14px;
+    margin:0;
+    max-width:440px;
+  }
+  .card{
+    background:var(--white);
+    border-radius:20px;
+    margin:-22px 16px 0;
+    padding:30px 24px 24px;
+    box-shadow:0 10px 28px -10px rgba(26,122,60,0.18);
+    border:1px solid var(--line);
+    position:relative;
+    z-index:2;
+  }
+  fieldset{
+    border:none;
+    padding:0;
+    margin:0 0 22px;
+  }
+  legend{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    color:var(--green);
+    font-weight:bold;
+    margin-bottom:14px;
+    padding:0;
+  }
+  legend svg{flex-shrink:0;}
+  label{
+    display:block;
+    font-size:14px;
+    font-weight:bold;
+    color:var(--ink);
+    margin-bottom:6px;
+  }
+  .req{color:var(--error); font-weight:bold;}
+  .opt-tag{
+    font-size:11px;
+    font-weight:normal;
+    color:var(--ink-soft);
+    text-transform:none;
+    letter-spacing:0;
+  }
+  .field{margin-bottom:16px;}
+  .hint{
+    font-size:12.5px;
+    color:var(--ink-soft);
+    margin-top:4px;
+  }
+  input[type=text], input[type=tel], select, textarea{
+    width:100%;
+    padding:11px 13px;
+    border:1.5px solid var(--line);
+    border-radius:10px;
+    font-size:14px;
+    font-family:inherit;
+    color:var(--ink);
+    background:var(--cream);
+    transition:border-color .15s, background .15s;
+  }
+  input::placeholder, textarea::placeholder{color:#9CA89C;}
+  input:focus, select:focus, textarea:focus{
+    outline:none;
+    border-color:var(--green);
+    background:var(--white);
+  }
+  select{
+    appearance:none;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%235E6B60' stroke-width='2'><path d='M6 9l6 6 6-6'/></svg>");
+    background-repeat:no-repeat;
+    background-position:right 13px center;
+    padding-right:36px;
+  }
+  textarea{resize:vertical; min-height:110px;}
+  select:disabled{
+    background-color:#EEF1EA;
+    color:#9CA89C;
+    cursor:not-allowed;
+  }
+  .type-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+  }
+  .type-option{
+    position:relative;
+  }
+  .type-option input{
+    position:absolute;
+    opacity:0;
+    inset:0;
+    cursor:pointer;
+  }
+  .type-option .box{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:7px;
+    border:1.5px solid var(--line);
+    border-radius:10px;
+    padding:12px 10px;
+    font-size:13.5px;
+    font-weight:bold;
+    color:var(--ink-soft);
+    background:var(--cream);
+    transition:all .15s;
+  }
+  .type-option .box svg{
+    stroke:var(--ink-soft);
+    flex-shrink:0;
+    transition:stroke .15s;
+  }
+  .type-option input:checked + .box{
+    border-color:var(--green);
+    background:rgba(60,148,80,0.08);
+    color:var(--deep-green);
+  }
+  .type-option input:checked + .box svg{
+    stroke:var(--deep-green);
+  }
+  /* File upload */
+  .file-drop{
+    border:1.5px dashed var(--line);
+    border-radius:10px;
+    background:var(--cream);
+    padding:18px 14px;
+    text-align:center;
+    cursor:pointer;
+    transition:border-color .15s, background .15s;
+  }
+  .file-drop:hover{border-color:var(--sky);}
+  .file-drop svg{stroke:var(--ink-soft); margin-bottom:6px;}
+  .file-drop .file-label{
+    font-size:13px;
+    font-weight:bold;
+    color:var(--ink-soft);
+  }
+  .file-drop .file-sub{
+    font-size:11.5px;
+    color:var(--ink-soft);
+    margin-top:2px;
+  }
+  .file-drop input[type=file]{display:none;}
+  .file-name{
+    margin-top:8px;
+    font-size:13px;
+    color:var(--deep-green);
+    font-weight:bold;
+    display:none;
+    align-items:center;
+    gap:6px;
+  }
+  .submit-btn{
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    background:var(--deep-green);
+    color:var(--white);
+    border:none;
+    padding:14px;
+    border-radius:10px;
+    font-size:15px;
+    font-weight:bold;
+    cursor:pointer;
+    margin-top:6px;
+    transition:background .15s, transform .1s;
+  }
+  .submit-btn:hover{background:var(--green);}
+  .submit-btn:active{transform:scale(0.99);}
+  .submit-btn:disabled{
+    background:#A9B3A4;
+    cursor:not-allowed;
+  }
+  .foot-note{
+    text-align:center;
+    font-size:12px;
+    color:var(--ink-soft);
+    margin-top:18px;
+    padding-bottom:8px;
+  }
+  .error-msg{
+    font-size:12.5px;
+    color:var(--error);
+    margin-top:4px;
+    display:none;
+  }
+  .field.invalid input, .field.invalid select, .field.invalid textarea, .field.invalid .file-drop{
+    border-color:var(--error);
+  }
+  .field.invalid .error-msg{display:block;}
+
+  /* success state */
+  .success-screen{
+    display:none;
+    text-align:center;
+    padding:50px 20px 70px;
+    margin:-22px 16px 0;
+    background:var(--white);
+    border-radius:20px;
+    box-shadow:0 10px 28px -10px rgba(26,122,60,0.18);
+    border:1px solid var(--line);
+    position:relative;
+    z-index:2;
+  }
+  .success-screen .check{
+    width:64px; height:64px;
+    border-radius:50%;
+    background:rgba(60,148,80,0.1);
+    display:flex; align-items:center; justify-content:center;
+    margin:0 auto 18px;
+  }
+  .success-screen h2{
+    color:var(--deep-green);
+    font-size:20px;
+    margin:0 0 8px;
+  }
+  .success-screen p{
+    color:var(--ink-soft);
+    font-size:14px;
+    max-width:380px;
+    margin:0 auto;
+  }
+  .success-screen button{
+    margin-top:22px;
+    background:none;
+    border:1.5px solid var(--line);
+    color:var(--ink-soft);
+    padding:9px 18px;
+    border-radius:8px;
+    font-size:13px;
+    font-weight:bold;
+    cursor:pointer;
+    font-family:inherit;
+  }
+</style>
+</head>
+<body>
+
+<div class="brandbar">
+  <div class="brandbar-inner">
+
+    <!-- =====================================================================
+         GANTI LOGO DI SINI
+         Saat ini logo masih SVG sementara (bentuk diamond hijau-biru).
+         Untuk pakai logo asli sekolah:
+         1. Hapus seluruh tag <svg>...</svg> di bawah ini
+         2. Ganti dengan: <img src="logo_sd.png" alt="Logo SD Cahaya Qur'an">
+         3. Pastikan file logo_sd.png disimpan di folder yang SAMA
+            dengan file HTML ini saat di-upload/hosting
+         ===================================================================== -->
+    <svg width="44" height="44" viewBox="0 0 100 100" aria-label="Logo SD Cahaya Qur'an">
+      <polygon points="50,4 96,50 50,96 4,50" fill="#FFFFFF" stroke="#1A7A3C" stroke-width="2"/>
+      <polygon points="50,4 75,29 50,54 25,29" fill="#1A7A3C"/>
+      <polygon points="50,96 75,71 50,46 25,71" fill="#5BBCE4"/>
+      <path d="M40 46 L50 40 L50 58 L42 62 Z" fill="#9AC93B"/>
+      <path d="M60 46 L50 40 L50 58 L58 62 Z" fill="#5BBCE4"/>
+    </svg>
+    <!-- ===================== AKHIR BAGIAN LOGO ===================== -->
+
+    <div class="brandbar-text">
+      <span class="school-name">SD Cahaya Qur'an</span>
+      <span class="school-tagline">Tahfizh &amp; Akademik</span>
+    </div>
+  </div>
+</div>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="eyebrow">Formulir Resmi</div>
+    <h1>Laporan & Keluhan Orang Tua</h1>
+    <p>Sampaikan masukan, laporan, atau keluhan Bapak/Ibu terkait putra-putri di sekolah. Tim kesiswaan akan menindaklanjuti.</p>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="card">
+    <form id="reportForm" novalidate>
+
+      <fieldset>
+        <legend>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5-10-5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+          Data Siswa
+        </legend>
+        <div class="field" id="field-kelas">
+          <label>Kelas <span class="req">*</span></label>
+          <select id="kelas" required>
+            <option value="" disabled selected>Pilih kelas</option>
+          </select>
+          <div class="error-msg">Pilih kelas terlebih dahulu.</div>
+        </div>
+        <div class="field" id="field-siswa">
+          <label>Nama Siswa <span class="req">*</span></label>
+          <select id="siswa" required disabled>
+            <option value="" disabled selected>Pilih kelas dulu</option>
+          </select>
+          <div class="error-msg">Pilih nama siswa.</div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Data Pelapor
+        </legend>
+        <div class="field" id="field-namaOrtu">
+          <label>Nama Orang Tua / Wali <span class="req">*</span></label>
+          <input type="text" id="namaOrtu" required>
+          <div class="error-msg">Nama wajib diisi.</div>
+        </div>
+        <div class="field" id="field-wa">
+          <label>No. WhatsApp <span class="req">*</span></label>
+          <input type="tel" id="wa" placeholder="081234567890" required>
+          <div class="error-msg">No. WhatsApp wajib diisi.</div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          Jenis Masukan
+        </legend>
+        <div class="field" id="field-jenis">
+          <div class="type-grid">
+            <label class="type-option">
+              <input type="radio" name="jenis" value="Laporan">
+              <div class="box">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h6M9 16h6M9 8h6"/><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9l5 5v11a2 2 0 0 1-2 2z"/></svg>
+                Laporan
+              </div>
+            </label>
+            <label class="type-option">
+              <input type="radio" name="jenis" value="Keluhan">
+              <div class="box">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4M12 17h.01"/></svg>
+                Keluhan
+              </div>
+            </label>
+            <label class="type-option">
+              <input type="radio" name="jenis" value="Saran">
+              <div class="box">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.74V17h8v-2.26A7 7 0 0 0 12 2z"/></svg>
+                Saran
+              </div>
+            </label>
+            <label class="type-option">
+              <input type="radio" name="jenis" value="Pertanyaan">
+              <div class="box">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.5 9a2.5 2.5 0 0 1 4.8 1c0 1.5-2.3 1.8-2.3 3.5M12 17h.01"/></svg>
+                Pertanyaan
+              </div>
+            </label>
+          </div>
+          <div class="error-msg">Pilih salah satu jenis.</div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          Detail
+        </legend>
+        <div class="field" id="field-isi">
+          <label>Detail Laporan / Keluhan <span class="req">*</span></label>
+          <textarea id="isi" placeholder="Tuliskan detail laporan, keluhan, saran, atau pertanyaan Bapak/Ibu di sini..." required></textarea>
+          <div class="hint">Semakin detail informasi, semakin cepat kami dapat menindaklanjuti.</div>
+          <div class="error-msg">Mohon isi detail laporan.</div>
+        </div>
+
+        <div class="field" id="field-bukti">
+          <label>Lampiran Bukti <span class="opt-tag">(opsional)</span></label>
+          <div class="file-drop" id="fileDrop">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg>
+            <div class="file-label">Klik untuk unggah foto / dokumen</div>
+            <div class="file-sub">JPG, PNG, atau PDF — maks. 5 MB</div>
+            <input type="file" id="buktiFile" accept="image/*,.pdf">
+          </div>
+          <div class="file-name" id="fileName">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+            <span id="fileNameText"></span>
+          </div>
+        </div>
+      </fieldset>
+
+      <button type="submit" class="submit-btn" id="submitBtn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+        Kirim Laporan
+      </button>
+      <div class="foot-note">Data Bapak/Ibu akan dijaga kerahasiaannya dan hanya digunakan untuk keperluan internal sekolah.</div>
+    </form>
+  </div>
+
+  <div class="success-screen" id="successScreen">
+    <div class="check">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#3C9450" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+    </div>
+    <h2>Laporan Terkirim</h2>
+    <p>Terima kasih, Bapak/Ibu. Laporan sudah kami terima dan akan segera ditindaklanjuti oleh tim kesiswaan.</p>
+    <button id="resetBtn">Kirim laporan lain</button>
+  </div>
+</div>
+
+<script>
+  /* =====================================================================
+     ⬇️  ISI DATA KELAS & NAMA SISWA DI SINI  ⬇️
+     =====================================================================
+     Format penulisan:
+       "Nama Kelas": ["Nama Siswa 1", "Nama Siswa 2", "Nama Siswa 3"],
+
+     Contoh tambah kelas baru:
+       "3A": ["Nama A", "Nama B"],
+
+     Contoh tambah siswa di kelas yang sudah ada:
+       "1A": ["Ahmad Faiz", "Nadia Putri", "Siswa Baru"],
+
+     - Setiap kelas WAJIB diakhiri tanda koma (,) kecuali baris terakhir
+     - Nama siswa dipisah tanda koma, diapit tanda kutip dua " "
+     ===================================================================== */
+  const DATA_SISWA = {
+    "1A": ["Ahmad Faiz", "Nadia Putri", "Rizky Pratama"],
+    "1B": ["Hana Salsabila", "Fadlan Maulana"],
+    "2A": ["Aisyah Zahra", "Daffa Ramadhan", "Khalisa Mumtaz"],
+    "2B": ["Yusuf Hakim", "Salma Khairunnisa"]
+  };
+  /* =====================  AKHIR BAGIAN DATA SISWA  ===================== */
+
+  /* =====================================================================
+     ⬇️  TEMPEL URL GOOGLE APPS SCRIPT DI SINI  ⬇️
+     =====================================================================
+     Cara dapatkan URL ini:
+     1. Buka Google Sheet tujuan
+     2. Klik menu Extensions → Apps Script
+     3. Tempel kode Apps Script (lihat panduan terpisah)
+     4. Klik Deploy → New deployment → pilih tipe "Web app"
+     5. Pada "Who has access" pilih "Anyone"
+     6. Klik Deploy, lalu COPY URL yang muncul
+     7. PASTE URL itu menggantikan tulisan di bawah ini
+        (yang di antara tanda kutip " ")
+
+     SEBELUM diisi (masih contoh):
+       const SCRIPT_URL = "GANTI_DENGAN_URL_APPS_SCRIPT_ANDA";
+
+     SETELAH diisi (contoh hasil asli, punya kamu akan beda):
+       const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby.../exec";
+     ===================================================================== */
+  const SCRIPT_URL = "GANTI_DENGAN_URL_APPS_SCRIPT_ANDA";
+  /* =====================  AKHIR BAGIAN SCRIPT URL  ===================== */
+
+  const kelasSelect = document.getElementById('kelas');
+  const siswaSelect = document.getElementById('siswa');
+
+  Object.keys(DATA_SISWA).forEach(kelas => {
+    const opt = document.createElement('option');
+    opt.value = kelas;
+    opt.textContent = kelas;
+    kelasSelect.appendChild(opt);
+  });
+
+  kelasSelect.addEventListener('change', () => {
+    const kelas = kelasSelect.value;
+    siswaSelect.innerHTML = '';
+    if (kelas && DATA_SISWA[kelas]) {
+      siswaSelect.disabled = false;
+      const placeholder = document.createElement('option');
+      placeholder.value = '';
+      placeholder.disabled = true;
+      placeholder.selected = true;
+      placeholder.textContent = 'Pilih nama siswa';
+      siswaSelect.appendChild(placeholder);
+      DATA_SISWA[kelas].forEach(nama => {
+        const opt = document.createElement('option');
+        opt.value = nama;
+        opt.textContent = nama;
+        siswaSelect.appendChild(opt);
+      });
+    } else {
+      siswaSelect.disabled = true;
+      const placeholder = document.createElement('option');
+      placeholder.textContent = 'Pilih kelas dulu';
+      siswaSelect.appendChild(placeholder);
+    }
+  });
+
+  // Auto-kapitalisasi nama orang tua: tiap kata huruf awal kapital
+  const namaOrtuInput = document.getElementById('namaOrtu');
+  namaOrtuInput.addEventListener('input', (e) => {
+    const cursorPos = e.target.selectionStart;
+    const original = e.target.value;
+    const capitalized = original.replace(/\b\p{L}/gu, c => c.toUpperCase());
+    if (capitalized !== original) {
+      e.target.value = capitalized;
+      e.target.setSelectionRange(cursorPos, cursorPos);
+    }
+  });
+
+  // File upload UI
+  const fileDrop = document.getElementById('fileDrop');
+  const buktiFile = document.getElementById('buktiFile');
+  const fileNameDiv = document.getElementById('fileName');
+  const fileNameText = document.getElementById('fileNameText');
+
+  fileDrop.addEventListener('click', () => buktiFile.click());
+  buktiFile.addEventListener('change', () => {
+    if (buktiFile.files.length > 0) {
+      fileNameText.textContent = buktiFile.files[0].name;
+      fileNameDiv.style.display = 'flex';
+    } else {
+      fileNameDiv.style.display = 'none';
+    }
+  });
+
+  function setInvalid(fieldId, invalid) {
+    document.getElementById(fieldId).classList.toggle('invalid', invalid);
+  }
+
+  document.getElementById('reportForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const kelas = kelasSelect.value;
+    const siswa = siswaSelect.value;
+    const namaOrtu = namaOrtuInput.value.trim();
+    const wa = document.getElementById('wa').value.trim();
+    const jenisEl = document.querySelector('input[name="jenis"]:checked');
+    const jenis = jenisEl ? jenisEl.value : '';
+    const isi = document.getElementById('isi').value.trim();
+
+    let valid = true;
+    setInvalid('field-kelas', !kelas); if (!kelas) valid = false;
+    setInvalid('field-siswa', !siswa); if (!siswa) valid = false;
+    setInvalid('field-namaOrtu', !namaOrtu); if (!namaOrtu) valid = false;
+    setInvalid('field-wa', !wa); if (!wa) valid = false;
+    setInvalid('field-jenis', !jenis); if (!jenis) valid = false;
+    setInvalid('field-isi', !isi); if (!isi) valid = false;
+
+    if (!valid) return;
+
+    const submitBtn = document.getElementById('submitBtn');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Mengirim...';
+
+    const payload = {
+      timestamp: new Date().toLocaleString('id-ID'),
+      kelas, siswa, namaOrtu, wa, jenis, isi,
+      namaBukti: buktiFile.files.length > 0 ? buktiFile.files[0].name : ''
+    };
+
+    try {
+      if (SCRIPT_URL && SCRIPT_URL.startsWith('http')) {
+        await fetch(SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: {'Content-Type': 'text/plain'},
+          body: JSON.stringify(payload)
+        });
+      } else {
+        console.log('Belum terhubung ke Google Sheet. Data:', payload);
+      }
+      document.getElementById('reportForm').closest('.card').style.display = 'none';
+      document.getElementById('successScreen').style.display = 'block';
+    } catch (err) {
+      alert('Gagal mengirim laporan. Coba lagi atau hubungi sekolah langsung.');
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Kirim Laporan';
+    }
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    document.getElementById('reportForm').reset();
+    siswaSelect.disabled = true;
+    siswaSelect.innerHTML = '<option>Pilih kelas dulu</option>';
+    fileNameDiv.style.display = 'none';
+    document.querySelectorAll('.field').forEach(f => f.classList.remove('invalid'));
+    document.getElementById('reportForm').closest('.card').style.display = 'block';
+    document.getElementById('successScreen').style.display = 'none';
+    document.getElementById('submitBtn').disabled = false;
+    document.getElementById('submitBtn').textContent = 'Kirim Laporan';
+  });
+</script>
+
+</body>
+</html>
